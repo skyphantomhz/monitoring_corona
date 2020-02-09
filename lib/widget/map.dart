@@ -61,6 +61,9 @@ class MapSampleState extends State<MapSample> {
         markers = data
             .map((item) => Marker(
                 markerId: MarkerId("${item.lat}:${item.long}"),
+                onTap: () {
+                  _settingModalBottomSheet(context, item);
+                },
                 position:
                     LatLng(double.parse(item.lat), double.parse(item.long)),
                 icon: _markerIcon))
@@ -119,5 +122,35 @@ class MapSampleState extends State<MapSample> {
     mapStyle = await DefaultAssetBundle.of(context)
         .loadString("assets/map_style.json");
     mapController?.setMapStyle(mapStyle);
+  }
+
+  void _settingModalBottomSheet(BuildContext context, Country data) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              decoration: BoxDecoration(color: Color(0xFF1b1b1b)),
+              child: Wrap(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    alignment: Alignment.center,
+                    child: Text(data.countryRegion,
+                        style:
+                            TextStyle(fontSize: 30, color: Color(0xFF757575))),
+                  ),
+                  ListTile(
+                    title: Text("Confirmed: ${data.confirmed}",
+                        style: TextStyle(color: Color(0xFF757575))),
+                  ),
+                  ListTile(
+                      title: Text("Deaths: ${data.deaths}",
+                          style: TextStyle(color: Color(0xFF757575)))),
+                  ListTile(
+                      title: Text("Recovered: ${data.recovered}",
+                          style: TextStyle(color: Color(0xFF757575)))),
+                ],
+              ));
+        });
   }
 }
