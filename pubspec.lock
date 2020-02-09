@@ -102,6 +102,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.22+1"
+  graphql:
+    dependency: transitive
+    description:
+      name: graphql
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  graphql_flutter:
+    dependency: "direct main"
+    description:
+      name: graphql_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  graphql_parser:
+    dependency: transitive
+    description:
+      name: graphql_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.4"
   http:
     dependency: "direct main"
     description:
@@ -137,6 +158,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.6+3"
   path:
     dependency: transitive
     description:
@@ -144,6 +172,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.4"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.0"
   pedantic:
     dependency: transitive
     description:
@@ -158,6 +193,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   quiver:
     dependency: transitive
     description:
@@ -226,6 +268,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  uuid_enhanced:
+    dependency: transitive
+    description:
+      name: uuid_enhanced
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   vector_math:
     dependency: transitive
     description:
@@ -233,6 +282,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  websocket:
+    dependency: transitive
+    description:
+      name: websocket
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.5"
   xml:
     dependency: transitive
     description:

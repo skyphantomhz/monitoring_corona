@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:monitoring_corona/util/locator.dart';
 import 'package:monitoring_corona/widget/map.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setupLocator();
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override

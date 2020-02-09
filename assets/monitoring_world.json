@@ -1,0 +1,5 @@
+{
+    "operationName": "countries",
+    "variables": {},
+    "query": "query countries {  countries {    Country_Region    Lat    Long_    Confirmed    Deaths    Recovered    __typename  }  provinces {    Province_Name   Province_Id    Lat    Long    Confirmed    Deaths    Recovered    Last_Update    __typename  }}"
+}
