@@ -1,5 +1,6 @@
 import 'package:monitoring_corona/model/TrendlineGlobalCase.dart';
 import 'package:monitoring_corona/model/country.dart';
+import 'package:monitoring_corona/model/history_confirmed.dart';
 import 'package:monitoring_corona/model/province.dart';
 
 class Data {
@@ -7,6 +8,7 @@ class Data {
   List<Province> provinces;
   int totalConfirmedLast;
   List<TrendlineGlobalCase> trendlineGlobalCases;
+  List<HistoryConfirmed> historyConfirmeds;
 
   Data(
       {this.countries,
@@ -34,6 +36,12 @@ class Data {
         trendlineGlobalCases.add(new TrendlineGlobalCase.fromJson(v));
       });
     }
+    if (json['historyConfirmeds'] != null) {
+      historyConfirmeds = new List<HistoryConfirmed>();
+      json['historyConfirmeds'].forEach((v) {
+        historyConfirmeds.add(new HistoryConfirmed.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +56,10 @@ class Data {
     if (this.trendlineGlobalCases != null) {
       data['trendlineGlobalCases'] =
           this.trendlineGlobalCases.map((v) => v.toJson()).toList();
+    }
+     if (this.historyConfirmeds != null) {
+      data['historyConfirmeds'] =
+          this.historyConfirmeds.map((v) => v.toJson()).toList();
     }
     return data;
   }

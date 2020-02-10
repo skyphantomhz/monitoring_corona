@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:monitoring_corona/bloc/monitoring_bloc.dart';
 import 'package:monitoring_corona/model/country.dart';
+import 'package:monitoring_corona/model/province.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MapSample extends StatefulWidget {
@@ -19,7 +20,8 @@ class MapSampleState extends State<MapSample> {
   Set<Marker> markers;
   BitmapDescriptor _markerIcon;
   List<Country> _countryPoint = List<Country>();
-
+  List<Province> _provincePoint = List<Province>();
+  bool _includeProvince = false;
   PublishSubject<String> position = PublishSubject();
 
   @override
@@ -52,24 +54,42 @@ class MapSampleState extends State<MapSample> {
   }
 
   void _setListener() {
-    _monitoringBloc.countries.listen((data) {
+    _monitoringBloc.data.listen((data) {
       if (data == null) {
         return;
       }
       setState(() {
-        _countryPoint = data;
-        markers = data
-            .map((item) => Marker(
-                markerId: MarkerId("${item.lat}:${item.long}"),
-                onTap: () {
-                  _settingModalBottomSheet(context, item);
-                },
-                position:
-                    LatLng(double.parse(item.lat), double.parse(item.long)),
-                icon: _markerIcon))
-            .toSet();
+        _countryPoint = data.countries;
+        _provincePoint = data.provinces;
+        _updateMarkerCountriesOnly();
       });
     });
+  }
+
+  void _updateMarkerCountriesOnly() {
+    markers = _countryPoint
+        .map((item) => Marker(
+            markerId: MarkerId("${item.lat}:${item.long}"),
+            onTap: () {
+              _settingModalBottomSheet(context, item);
+            },
+            position: LatLng(double.parse(item.lat), double.parse(item.long)),
+            icon: _markerIcon))
+        .toSet();
+  }
+
+  void _updateMarkerProvincesInclude() {
+    _updateMarkerCountriesOnly();
+    markers.removeWhere((marker) => marker.markerId == MarkerId("16:108"));
+    markers.addAll(_provincePoint
+        .map((item) => Marker(
+            markerId: MarkerId("${item.lat}:${item.long}"),
+            onTap: () {
+              _settingProvinceBottomSheet(context, item);
+            },
+            position: LatLng(double.parse(item.lat), double.parse(item.long)),
+            icon: _markerIcon))
+        .toSet());
   }
 
   static final CameraPosition _kGooglePlex =
@@ -92,6 +112,21 @@ class MapSampleState extends State<MapSample> {
               _controller.complete(controller);
             },
             onCameraMove: (cameraPosition) {
+              if (cameraPosition.zoom > 5) {
+                if (!_includeProvince) {
+                  setState(() {
+                    _updateMarkerProvincesInclude();
+                    _includeProvince = true;
+                  });
+                }
+              } else {
+                if (_includeProvince) {
+                  setState(() {
+                    _updateMarkerCountriesOnly();
+                    _includeProvince = false;
+                  });
+                }
+              }
               final info =
                   "Bearing: ${cameraPosition.bearing.toInt()}; tilt: ${cameraPosition.tilt.toInt()}; target: ${cameraPosition.target.longitude.toInt()}:${cameraPosition.target.latitude.toInt()}; zoom: ${cameraPosition.zoom.toInt()};";
               position.sink.add(info);
@@ -125,6 +160,17 @@ class MapSampleState extends State<MapSample> {
   }
 
   void _settingModalBottomSheet(BuildContext context, Country data) {
+    _showDialog(context, data.countryRegion, data.confirmed, data.deaths,
+        data.recovered);
+  }
+
+  void _settingProvinceBottomSheet(BuildContext context, Province data) {
+    _showDialog(context, data.provinceName, data.confirmed, data.deaths,
+        data.recovered);
+  }
+
+  void _showDialog(BuildContext context, String placeName, String confirmed,
+      String deaths, String recovered) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -135,19 +181,19 @@ class MapSampleState extends State<MapSample> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     alignment: Alignment.center,
-                    child: Text(data.countryRegion,
+                    child: Text(placeName,
                         style:
                             TextStyle(fontSize: 30, color: Color(0xFF757575))),
                   ),
                   ListTile(
-                    title: Text("Confirmed: ${data.confirmed}",
+                    title: Text("Confirmed: $confirmed",
                         style: TextStyle(color: Color(0xFF757575))),
                   ),
                   ListTile(
-                      title: Text("Deaths: ${data.deaths}",
+                      title: Text("Deaths: $deaths",
                           style: TextStyle(color: Color(0xFF757575)))),
                   ListTile(
-                      title: Text("Recovered: ${data.recovered}",
+                      title: Text("Recovered: $recovered",
                           style: TextStyle(color: Color(0xFF757575)))),
                 ],
               ));
