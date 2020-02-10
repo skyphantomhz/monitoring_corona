@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:monitoring_corona/bloc/monitoring_bloc.dart';
@@ -165,6 +166,7 @@ class MapSampleState extends State<MapSample> {
   }
 
   void _settingProvinceBottomSheet(BuildContext context, Province data) {
+    Crashlytics.instance.crash();
     _showDialog(context, data.provinceName, data.confirmed, data.deaths,
         data.recovered);
   }

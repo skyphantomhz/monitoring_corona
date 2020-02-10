@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "698956088138",
+    "firebase_url": "https://monitoring-corona-c7d7e.firebaseio.com",
+    "project_id": "monitoring-corona-c7d7e",
+    "storage_bucket": "monitoring-corona-c7d7e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698956088138:android:397158c3106e8e48ab77b3",
+        "android_client_info": {
+          "package_name": "com.skyphantomhz.monitoring_corona.monitoring_corona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698956088138-l9eoiu12em1c0mnvqub75n8oipc01itd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skyphantomhz.monitoring_corona.monitoring_corona",
+            "certificate_hash": "0c6707010914427c0f56d98d043ca092ebcfe7cc"
+          }
+        },
+        {
+          "client_id": "698956088138-t16j6k08iaruv337s4u52h0sjr2kskgl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD88sGiPvE6H9caH8AAFmB00omuQdYgASQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698956088138-t16j6k08iaruv337s4u52h0sjr2kskgl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
