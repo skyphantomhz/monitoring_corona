@@ -133,22 +133,22 @@ class MapSampleState extends State<MapSample> {
               position.sink.add(info);
             },
           ),
-          Align(
-            alignment: Alignment(0, 1),
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: StreamBuilder<Object>(
-                stream: position.stream,
-                builder: (context, snapshot) {
-                  final info = snapshot?.data ?? "Null";
-                  return Text(
-                    info,
-                    style: TextStyle(color: Colors.white),
-                  );
-                },
-              ),
-            ),
-          )
+          // Align(
+          //   alignment: Alignment(0, 1),
+          //   child: Container(
+          //     padding: EdgeInsets.all(10),
+          //     child: StreamBuilder<Object>(
+          //       stream: position.stream,
+          //       builder: (context, snapshot) {
+          //         final info = snapshot?.data ?? "Null";
+          //         return Text(
+          //           info,
+          //           style: TextStyle(color: Colors.white),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );
@@ -166,7 +166,6 @@ class MapSampleState extends State<MapSample> {
   }
 
   void _settingProvinceBottomSheet(BuildContext context, Province data) {
-    Crashlytics.instance.crash();
     _showDialog(context, data.provinceName, data.confirmed, data.deaths,
         data.recovered);
   }
