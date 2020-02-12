@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:bloc_provider/bloc_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:monitoring_corona/bloc/monitoring_bloc.dart';
@@ -36,7 +36,7 @@ class MapSampleState extends State<MapSample> {
   void initState() {
     super.initState();
     initMarkerIcon();
-    _monitoringBloc = MonitoringBloc();
+    _monitoringBloc = BlocProvider.of<MonitoringBloc>(context);
     _getQuery();
     _setListener();
     loadMapStyleFile();
@@ -98,59 +98,37 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            markers: markers,
-            mapType: MapType.normal,
-            initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-              if (mapStyle != null) {
-                mapController.setMapStyle(mapStyle);
-              }
-              _controller.complete(controller);
-            },
-            onCameraMove: (cameraPosition) {
-              if (cameraPosition.zoom > 5) {
-                if (!_includeProvince) {
-                  setState(() {
-                    _updateMarkerProvincesInclude();
-                    _includeProvince = true;
-                  });
-                }
-              } else {
-                if (_includeProvince) {
-                  setState(() {
-                    _updateMarkerCountriesOnly();
-                    _includeProvince = false;
-                  });
-                }
-              }
-              final info =
-                  "Bearing: ${cameraPosition.bearing.toInt()}; tilt: ${cameraPosition.tilt.toInt()}; target: ${cameraPosition.target.longitude.toInt()}:${cameraPosition.target.latitude.toInt()}; zoom: ${cameraPosition.zoom.toInt()};";
-              position.sink.add(info);
-            },
-          ),
-          // Align(
-          //   alignment: Alignment(0, 1),
-          //   child: Container(
-          //     padding: EdgeInsets.all(10),
-          //     child: StreamBuilder<Object>(
-          //       stream: position.stream,
-          //       builder: (context, snapshot) {
-          //         final info = snapshot?.data ?? "Null";
-          //         return Text(
-          //           info,
-          //           style: TextStyle(color: Colors.white),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // )
-        ],
-      ),
+    return GoogleMap(
+      markers: markers,
+      mapType: MapType.normal,
+      initialCameraPosition: _kGooglePlex,
+      onMapCreated: (GoogleMapController controller) {
+        mapController = controller;
+        if (mapStyle != null) {
+          mapController.setMapStyle(mapStyle);
+        }
+        _controller.complete(controller);
+      },
+      onCameraMove: (cameraPosition) {
+        if (cameraPosition.zoom > 5) {
+          if (!_includeProvince) {
+            setState(() {
+              _updateMarkerProvincesInclude();
+              _includeProvince = true;
+            });
+          }
+        } else {
+          if (_includeProvince) {
+            setState(() {
+              _updateMarkerCountriesOnly();
+              _includeProvince = false;
+            });
+          }
+        }
+        final info =
+            "Bearing: ${cameraPosition.bearing.toInt()}; tilt: ${cameraPosition.tilt.toInt()}; target: ${cameraPosition.target.longitude.toInt()}:${cameraPosition.target.latitude.toInt()}; zoom: ${cameraPosition.zoom.toInt()};";
+        position.sink.add(info);
+      },
     );
   }
 

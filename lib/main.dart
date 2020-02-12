@@ -1,12 +1,14 @@
 import 'dart:async';
 
+import 'package:bloc_provider/bloc_provider.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:monitoring_corona/bloc/monitoring_bloc.dart';
 import 'package:monitoring_corona/util/locator.dart';
-import 'package:monitoring_corona/widget/map.dart';
+import 'package:monitoring_corona/widget/homepage.dart';
 
 void main() {
   Crashlytics.instance.enableInDevMode = true;
@@ -14,7 +16,8 @@ void main() {
   setupLocator();
 
   runZoned(() {
-    runApp(MyApp());
+    runApp(BlocProvider<MonitoringBloc>(
+        creator: (_context, _bag) => MonitoringBloc(), child: MyApp()));
   }, onError: Crashlytics.instance.recordError);
 }
 
@@ -29,7 +32,14 @@ class _MyAppState extends State<MyApp> {
       FirebaseAnalyticsObserver(analytics: analytics);
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    keywords: <String>['flutter', 'great app', 'food', 'drink', 'corona', 'china'],
+    keywords: <String>[
+      'flutter',
+      'great app',
+      'food',
+      'drink',
+      'corona',
+      'china'
+    ],
     contentUrl: 'http://foo.com/bar.html',
     childDirected: true,
     nonPersonalizedAds: true,
@@ -68,24 +78,10 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(bannerAd: _bannerAd),
+      home: SafeArea(
+        child: HomePage(bannerAd: _bannerAd),
+      ),
       navigatorObservers: <NavigatorObserver>[observer],
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.bannerAd}) : super(key: key);
-  final BannerAd bannerAd;
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MapSample(),
     );
   }
 }

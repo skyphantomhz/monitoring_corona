@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:bloc_provider/bloc_provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:monitoring_corona/model/country.dart';
 import 'package:monitoring_corona/model/data.dart';
 import 'package:monitoring_corona/service/monitoring_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MonitoringBloc {
+class MonitoringBloc extends Bloc {
   MonitoringService _service = GetIt.I<MonitoringService>();
   Timer timer;
   final scheduleFetch = const Duration(minutes: 5);
@@ -14,6 +14,7 @@ class MonitoringBloc {
   PublishSubject<Data> _data = PublishSubject<Data>();
   Observable<Data> get data => _data.stream;
 
+  @override
   void dispose() {
     _data.close();
     timer?.cancel();
